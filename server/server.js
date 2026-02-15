@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // but BEFORE any route definitions
 
 // CORS configuration - SIMPLE AND PROVEN TO WORK
-const cors = require('cors');
+
 
 // Allow both local development and production frontend
 const allowedOrigins = [
