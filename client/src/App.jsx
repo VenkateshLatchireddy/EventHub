@@ -42,7 +42,7 @@ function App() {
           />
           
           <Routes>
-            <Route path="/" element={<Events />} /> {/* Changed: Now root shows Events page directly */}
+            <Route path="/" element={<Events />} /> 
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/events" element={<Events />} />
