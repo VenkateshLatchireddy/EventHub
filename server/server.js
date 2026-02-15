@@ -26,30 +26,37 @@ const connectDB = async () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS configuration - FIXED VERSION
+
+// AFTER initializing your app (after const app = express())
+// but BEFORE any route definitions
+
+// CORS configuration - SIMPLE AND PROVEN TO WORK
+const cors = require('cors');
+
+// Allow both local development and production frontend
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.FRONTEND_URL // This should be just the URL, not the whole string
+  'https://event-hub-alpha-lemon.vercel.app'
 ];
-
-// Clean up the FRONTEND_URL if it has any issues
-const cleanFrontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : '';
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (like mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
     
-    // Check if the origin is in the allowed list
-    if (allowedOrigins.indexOf(origin) !== -1 || origin === cleanFrontendUrl) {
+    // Check if the origin is in our allowed list
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log('Blocked origin:', origin); // Log blocked origins for debugging
+      console.log('🚫 CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
+
+// IMPORTANT: This must come BEFORE your routes
+// Your routes should be after this configuration
 
 // Mount routes
 app.use('/api/auth', authRoutes);
