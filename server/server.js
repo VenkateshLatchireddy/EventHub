@@ -27,8 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
+const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
+// Remove any trailing slash from the origin
+const cleanOrigin = allowedOrigin.replace(/\/$/, '');
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: cleanOrigin,
   credentials: true
 }));
 
